@@ -9,6 +9,16 @@ set -euxo pipefail
 
 DIR=$(cd "$(dirname "$0")"; pwd -P)
 
+# Get the options
+while getopts hs: c ; do
+    case $c in
+        h) usage ; exit 0 ;;
+        s) storage="hdfs" ;;
+        \?) usage ; exit 2 ;;
+    esac
+done
+shift "$((OPTIND-1))"
+
 CIUXCONFIG=${CIUXCONFIG:-"$HOME/.ciux/ciux.sh"}
 . $CIUXCONFIG
 
@@ -61,7 +71,8 @@ argocd app set fink-broker -p image.repository="$CIUX_IMAGE_REGISTRY" \
     -p e2e.enabled="$e2e_enabled" \
     -p image.tag="$CIUX_IMAGE_TAG" \
     -p log_level="DEBUG" \
-    -p night="20200101"
+    -p night="20200101" \
+    -p storage="$storage"
 
 argocd app set fink-alert-simulator -p image.tag="$FINK_ALERT_SIMULATOR_VERSION"
 
