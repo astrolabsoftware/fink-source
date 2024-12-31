@@ -9,11 +9,13 @@ set -euxo pipefail
 
 DIR=$(cd "$(dirname "$0")"; pwd -P)
 
+storage="hdfs"
+
 # Get the options
 while getopts hs: c ; do
     case $c in
         h) usage ; exit 0 ;;
-        s) storage="hdfs" ;;
+        s) storage="$OPTARG" ;;
         \?) usage ; exit 2 ;;
     esac
 done
