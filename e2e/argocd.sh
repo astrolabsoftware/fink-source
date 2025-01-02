@@ -11,11 +11,20 @@ DIR=$(cd "$(dirname "$0")"; pwd -P)
 
 storage="hdfs"
 
+usage() {
+    cat << EOD
+Usage: $(basename "$0") [options]
+Available options:
+  -h            This message
+  -S <storage>  Storage to use (hdfs or minio)
+EOD
+}
+
 # Get the options
-while getopts hs: c ; do
+while getopts hS: c ; do
     case $c in
         h) usage ; exit 0 ;;
-        s) storage="$OPTARG" ;;
+        S) storage="$OPTARG" ;;
         \?) usage ; exit 2 ;;
     esac
 done
