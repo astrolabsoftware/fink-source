@@ -131,7 +131,7 @@ if [ $CIUX_BUILD = true ]; then
 fi
 
 echo "Run ArgoCD to install the whole fink e2e tests stack"
-$DIR/argocd.sh
+$DIR/argocd.sh -S "$storage"
 
 echo "Check the results of the tests."
 $DIR/check-results.sh
