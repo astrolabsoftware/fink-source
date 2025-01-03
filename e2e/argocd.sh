@@ -62,6 +62,7 @@ then
   hdfs_enabled="false"
   s3_enabled="true"
 elif [ $storage == "hdfs" ]
+then
   hdfs_enabled="true"
   s3_enabled="false"
 fi
