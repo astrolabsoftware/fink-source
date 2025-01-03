@@ -61,10 +61,12 @@ if [ $storage == "s3" ]
 then
   hdfs_enabled="false"
   s3_enabled="true"
+  online_data_prefix=""
 elif [ $storage == "hdfs" ]
 then
   hdfs_enabled="true"
   s3_enabled="false"
+  online_data_prefix="hdfs://simple-hdfs-namenode-default-0.simple-hdfs-namenode-default.hdfs:8020///user/185"
 fi
 
 
@@ -96,6 +98,7 @@ argocd app set fink-broker -p image.repository="$CIUX_IMAGE_REGISTRY" \
     -p image.tag="$CIUX_IMAGE_TAG" \
     -p log_level="DEBUG" \
     -p night="20200101" \
+    -p online_data_prefix="$online_data_prefix" \
     -p storage="$storage"
 
 argocd app set fink-alert-simulator -p image.tag="$FINK_ALERT_SIMULATOR_VERSION"
