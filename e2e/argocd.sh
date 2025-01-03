@@ -57,11 +57,23 @@ e2e_enabled="true"
 argocd login --core
 kubectl config set-context --current --namespace="$NS"
 
+if [ $storage == "s3" ]
+then
+  hdfs_enabled="false"
+  s3_enabled="true"
+elif [ $storage == "hdfs" ]
+  hdfs_enabled="true"
+  s3_enabled="false"
+fi
+
+
 # Create fink app
 argocd app create fink --dest-server https://kubernetes.default.svc \
     --dest-namespace "$NS" \
     --repo https://github.com/astrolabsoftware/fink-cd.git \
     --path apps --revision "$FINK_CD_WORKBRANCH" \
+    -p s3.enabled="$s3_enabled" \
+    -p hdfs.enabled="$hdfs_enabled" \
     -p spec.source.targetRevision.default="$FINK_CD_WORKBRANCH" \
     -p spec.source.targetRevision.finkbroker="$FINK_BROKER_WORKBRANCH" \
     -p spec.source.targetRevision.finkalertsimulator="$FINK_ALERT_SIMULATOR_WORKBRANCH"
