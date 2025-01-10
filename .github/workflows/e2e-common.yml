@@ -144,7 +144,7 @@ jobs:
       #     detached: true
       - name: Run argoCD
         run: |
-          ./e2e/argocd.sh -s "${{ matrix.storage }}"
+          ./e2e/argocd.sh -S "${{ matrix.storage }}"
       - name: Check results
         run: |
           ./e2e/check-results.sh
